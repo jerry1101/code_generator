@@ -10,24 +10,29 @@ using Newtonsoft.Json;
 
 namespace CodeGeneratorFunc
 {
-    public static class Function1
+    public static class CodeGenerator
     {
-        [FunctionName("Function1")]
+        [FunctionName("GetPersistenceClass")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Generating Persistence classes.");
 
-            string name = req.Query["name"];
+            string entityName = req.Query["entityName"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            entityName = entityName ?? data?.entityName;
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
+            var generator = new Generator() { EntityName = entityName};
+
+            generator.GetPersistenceClass(Methods.GetPersistenceClass);
+
+            return entityName != null
+                ? (ActionResult)new OkObjectResult($"Hello, {entityName}")
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
+        
     }
 }
