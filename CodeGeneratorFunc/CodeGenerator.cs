@@ -32,7 +32,7 @@ namespace CodeGeneratorFunc
 
             
             return codeList != null
-                ? (ActionResult)new OkObjectResult($"Hello, {codeList}")
+                ? (ActionResult)new OkObjectResult(codeList)
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
 
