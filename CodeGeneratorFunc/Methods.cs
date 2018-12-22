@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CodeGeneratorFunc
 {
     class Methods
     {
-        static public string GetPersistenceClass(string entity)
+        static public IEnumerable<ClassCode> GetPersistLayerClasses(string entity)
         {
-            return "";
+
+            var list = new List<ClassCode>();
+            list.Add(new ClassCode() { ClassName = $"{entity}DA", ClassBody = "Add" });
+            list.Add(new ClassCode() { ClassName = $"{entity}BL", ClassBody = "Add" });
+
+            return list;
         }
     }
 }

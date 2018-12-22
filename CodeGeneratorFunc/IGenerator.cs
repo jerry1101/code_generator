@@ -1,6 +1,8 @@
-﻿using System;
+﻿using CodeGeneratorFunc;
+using System;
+using System.Collections.Generic;
 
 public interface IGenerator
 {
-    string GetPersistenceClass(Func<string,string> f);
+    IEnumerable<ClassCode> GetCodes(Func<string, IEnumerable<ClassCode>> f);
 }

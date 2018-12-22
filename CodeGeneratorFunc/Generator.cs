@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CodeGeneratorFunc;
+using System;
+using System.Collections.Generic;
 
 public class Generator : IGenerator
 {
@@ -9,7 +11,7 @@ public class Generator : IGenerator
 
     public string EntityName { get => _entityName; set => _entityName = value; }
 
-    public string GetPersistenceClass(Func<string, string> f)
+    public IEnumerable<ClassCode> GetCodes(Func<string, IEnumerable<ClassCode>> f)
     {
         return f(_entityName);
     }

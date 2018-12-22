@@ -1,19 +1,20 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeGeneratorFunc
 {
     public static class CodeGenerator
     {
         [FunctionName("GetPersistenceClass")]
-        public static async Task<IActionResult> Run(
+        public static async Task<ActionResult<List<ClassCode>>> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -25,14 +26,15 @@ namespace CodeGeneratorFunc
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             entityName = entityName ?? data?.entityName;
 
-            var generator = new Generator() { EntityName = entityName};
+            var generator = new Generator() { EntityName = entityName };
 
-            generator.GetPersistenceClass(Methods.GetPersistenceClass);
+            var codeList = generator.GetCodes(Methods.GetPersistLayerClasses);
 
-            return entityName != null
-                ? (ActionResult)new OkObjectResult($"Hello, {entityName}")
+            
+            return codeList != null
+                ? (ActionResult)new OkObjectResult($"Hello, {codeList}")
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
-        
+
     }
 }
