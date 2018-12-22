@@ -9,8 +9,14 @@ namespace CodeGeneratorFunc
         {
 
             var list = new List<ClassCode>();
-            list.Add(new ClassCode() { ClassName = $"{entity}DA", ClassBody = "Add" });
-            list.Add(new ClassCode() { ClassName = $"{entity}BL", ClassBody = "Add" });
+            var class1 = new ClassCode() { ClassName = $"{entity}DA", ClassBody = "Add" };
+            class1.Methods.Add(new MethodCode() { MethodName = "Select", MethodBody = "select * from customer" });
+            class1.Methods.Add(new MethodCode() { MethodName = "update", MethodBody = "select * from customer" });
+            class1.Methods.Add(new MethodCode() { MethodName = "delete", MethodBody = "select * from customer" });
+            var class2 = new ClassCode() { ClassName = $"{entity}BL", ClassBody = "Add" };
+
+            list.Add(class1);
+            list.Add(class2);
 
             return list;
         }
